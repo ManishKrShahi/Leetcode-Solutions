@@ -12,24 +12,21 @@
 class BSTIterator {
        
 private: 
-    stack<TreeNode *> myStack;
+    stack<TreeNode *> s;
     void pushAll(TreeNode *node) {
-     for (; node != NULL; myStack.push(node), node = node->left);
+     for (; node != NULL; s.push(node), node = node->left);
     }
 public:
     BSTIterator(TreeNode *root) {
         pushAll(root);
     }
 
-    /** @return whether we have a next smallest number */
     bool hasNext() {
-        return !myStack.empty();
+        return !s.empty();
     }
-
-    /** @return the next smallest number */
     int next() {
-        TreeNode *tmpNode = myStack.top();
-        myStack.pop();
+        TreeNode *tmpNode = s.top();
+        s.pop();
         pushAll(tmpNode->right);
         return tmpNode->val;
     }
