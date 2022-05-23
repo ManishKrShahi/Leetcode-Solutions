@@ -10,22 +10,33 @@
  * };
  */
 class Solution {
-public:
-vector<pair<TreeNode*,TreeNode*>> vec;
-    TreeNode* prev = NULL;
-    void inorder(TreeNode* root)
-    {
-        if(!root) return;
+private: 
+    TreeNode* first;
+    TreeNode* prev;
+    TreeNode* middle;
+    TreeNode* last; 
+private: 
+    void inorder(TreeNode* root) {
+        if(root == NULL) return; 
         inorder(root->left);
-        if(prev && prev->val>root->val) vec.push_back({prev,root});
+        if (prev != NULL && (root->val < prev->val)){
+            if ( first == NULL ) {
+            first = prev;
+            middle = root;
+        }
+        else
+            last = root;
+        }
+ 
         prev = root;
-        inorder(root->right);
+        inorder(root->right); 
     }
+public:
     void recoverTree(TreeNode* root) {
+        first = middle = last = NULL; 
+        prev = new TreeNode(INT_MIN); 
         inorder(root);
-        if(vec.size()==1)
-            swap(vec[0].first->val,vec[0].second->val);
-        if(vec.size()==2)
-            swap(vec[0].first->val,vec[1].second->val);
+        if(first && last) swap(first->val, last->val); 
+        else if(first && middle) swap(first->val, middle->val); 
     }
 };
